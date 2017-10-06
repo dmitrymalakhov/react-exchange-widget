@@ -1,20 +1,30 @@
+// @flow
+
 import React, { Component } from 'react';
+import ExchangeWidgetStyled from './styled/ExchangeWidgetStyled';
 
-const propTypes = {};
-const defaultProps = {};
+type Props = {
+  defaultPair: Array<?string>,
+};
 
-class ExchangeWidget extends Component {
+class ExchangeWidget extends Component<Props> {
+  static defaultProps = {
+    defaultPair: ['USD', 'EUR'],
+  }
+
+  componentWillMount() {
+
+  }
+
   render() {
     return (
-      <div>
-        Loading...
-      </div>
-    )
+      <ExchangeWidgetStyled>
+        {this.props.defaultPair}
+      </ExchangeWidgetStyled>
+    );
   }
 }
 
-ExchangeWidget.propTypes = propTypes;
-ExchangeWidget.defaultProps = defaultProps;
 ExchangeWidget.displayName = 'ExchangeWidget';
 
 export default ExchangeWidget;

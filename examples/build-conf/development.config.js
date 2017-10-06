@@ -12,10 +12,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'),
 
 module.exports = merge.smart(config('development'), {
   entry: {
-    main: [
-      `webpack-dev-server/client?http://0.0.0.0:${APP_PORT}/`,
-      'webpack/hot/dev-server',
-    ],
+    main: ['react-hot-loader/patch'],
   },
   devtool: 'cheap-module-source-map',
   profile: false,

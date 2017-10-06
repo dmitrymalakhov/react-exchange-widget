@@ -1,2 +1,7 @@
-module.exports.GRAPHQL_PORT = 8080;
+/**
+ * @author Dmitry Malakhov
+ */
+
+'use strict';
+
 module.exports.APP_PORT = 8090;

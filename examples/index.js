@@ -1,15 +1,18 @@
+/**
+ * @author Dmitry Malakhov
+ */
+
+'use strict';
+
 import React from 'react';
-import ExchangeWidget from '../src';
+import ReactDOM from 'react-dom';
+import Root from './root';
 
-const propTypes = {};
-const defaultProps = {};
+const container = document.getElementById('container');
 
-const Root = () => (
-  <ExchangeWidget />
-);
-
-Root.propTypes = propTypes;
-Root.defaultProps = defaultProps;
-Root.displayName = 'Root';
-
-export default Root;
+window.addEventListener('DOMContentLoaded', () => {
+  ReactDOM.render(
+    <Root />,
+    container
+  );
+});

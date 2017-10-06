@@ -5,21 +5,14 @@
 'use strict';
 
 const { resolve } = require('path'),
-  webpack = require('webpack'),
-  omit = require('lodash.omit');
+  webpack = require('webpack')
 
-const Package = require('../package.json');
+const Package = require('../../package.json');
 
-const PATH_SOURCES = resolve(__dirname, '../app');
+const PATH_SOURCES = resolve(__dirname, '../');
 const PATH_DIST = resolve(__dirname, '..', 'public');
 
-const dependencies = omit(Package.dependencies, [
-  'apollo-server-express',
-  'express',
-  'graphql',
-]);
-
-const vendorChunks = Object.keys(dependencies);
+const vendorChunks = Object.keys(Package.dependencies);
 
 const config = env => ({
   target: 'web',
