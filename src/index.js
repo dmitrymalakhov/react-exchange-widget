@@ -26,10 +26,6 @@ type Currencies = {
   [string]: string,
 };
 
-type Pair = {
-  label: string,
-  value: number,
-};
 
 type State = {
   currencies: Currencies,
@@ -64,20 +60,8 @@ class ExchangeWidget extends React.Component<Props, State> {
   componentDidMount() {
     this._currenciesConnection.read()
       .then((currencies: { data: Currencies}): void => {
-        const permutations = R.compose(R.sequence(R.of), R.flip(R.repeat));
-        
-        const availableCurrencies = Object.keys(currencies.data),
-          mapIndexed = R.addIndex(R.map),
-          slasher = R.join('/');
-
-        const availableCurrenciesPair = mapIndexed(
-          (item, value) => ({ label: slasher(item), value }),
-          permutations(2, availableCurrencies),
-        );
-
         this.setState({
-          currencies: currencies.data,
-          availableCurrenciesPair,
+          currencies: Object.keys(currencies.data),
         });
       });
   }
@@ -86,23 +70,23 @@ class ExchangeWidget extends React.Component<Props, State> {
   _currenciesConnection: string => CRUD;
 
   _renderCurrenciesPairSelect() {
-    const { availableCurrenciesPair } = this.state;
+    const { currencies } = this.state;
 
-    if (!availableCurrenciesPair.length)
+    if (!currencies.length)
       return null;
 
-    const mapToElement = (pair: Pair): React.Element<any> => (
-      <div key={pair.value}>
-        {pair.label}
-      </div>
+    const mapToElement = (currency: string): React.Element<any> => (
+      <li key={currency}>
+        {currency}
+      </li>
     );
 
-    const currenciesList = R.map(mapToElement, availableCurrenciesPair);
+    const currenciesList = R.map(mapToElement, currencies);
 
     return (
-      <div>
+      <ul>
         { currenciesList }
-      </div>
+      </ul>
     );
   }
 
