@@ -49,6 +49,8 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "axios": "^0.16.2",
+    "ramda": "^0.24.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "styled-components": "^2.2.1"
