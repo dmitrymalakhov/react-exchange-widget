@@ -35,11 +35,15 @@ const ExchangeWidgetPairSelectButtonStyled = styled.button`
   text-transform: uppercase;
   font-weight: 600;
   padding: 0px 8px;
-  border-radius: 2px;
   transition-property: color,background-color,border,box-shadow;
   transition-duration: 300ms;
   transition-timing-function: ease-out;
   transition-delay: 0ms;
+
+  &:hover {
+    background-color: hsl(220,45.7%,36.8%);
+    color: #ffffff;
+  }
 `;
 
 ExchangeWidgetPairSelectButtonStyled.displayName =

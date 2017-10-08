@@ -96,13 +96,13 @@ class ExchangeWidget extends React.Component<Props, State> {
   _connection: string => Function;
   _currenciesConnection: string => CRUD;
 
-  _handleChangePair = () => {
+  _handleShowCurrencyPairModal = () => {
     this.setState({
       choicePairVisible: true,
     });
   }
 
-  _handleClickPair = ({ index, value }) => {
+  _handleClickCurrencyPair = ({ index, value }) => {
     const mapIndexed = R.addIndex(R.map);
 
     this.setState({
@@ -110,6 +110,12 @@ class ExchangeWidget extends React.Component<Props, State> {
         (item, idx) => index === idx ? value : item,
         this.state.pair,
       ),
+    });
+  }
+
+  _handleChangeCurrencyPair = () => {
+    this.setState({
+      choicePairVisible: false,
     });
   }
 
@@ -127,7 +133,7 @@ class ExchangeWidget extends React.Component<Props, State> {
           label={currency}
           value={currency}
           active={pair[currencyNum] === currency}
-          onClick={this._handleClickPair}
+          onClick={this._handleClickCurrencyPair}
         />
       );
 
@@ -156,8 +162,10 @@ class ExchangeWidget extends React.Component<Props, State> {
           </ExchangeWidgetPairSelectStyled>
         </ExchangeWidgetPairSelectListBoxStyled>
         <ExchangeWidgetPairSelectButtonBoxStyled>
-          <ExchangeWidgetPairSelectButtonStyled>
-            Update
+          <ExchangeWidgetPairSelectButtonStyled
+            onClick={this._handleChangeCurrencyPair}
+          >
+            APPLY
           </ExchangeWidgetPairSelectButtonStyled>
         </ExchangeWidgetPairSelectButtonBoxStyled>
       </ExchangeWidgetPairSelectBoxStyled>
@@ -174,7 +182,7 @@ class ExchangeWidget extends React.Component<Props, State> {
 
     return (
       <ExchangeWidgetPairBoxStyled>
-        <ExchangeWidgetPairStyled onClick={this._handleChangePair}>
+        <ExchangeWidgetPairStyled onClick={this._handleShowCurrencyPairModal}>
           {pairExchange}
         </ExchangeWidgetPairStyled>
       </ExchangeWidgetPairBoxStyled>
