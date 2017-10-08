@@ -13,7 +13,7 @@ import { ExchangeWidgetPairSelectListItemStyled } from './styled';
 import {
   CURRENCY_SOURCE_PAIR_INDEX,
   CURRENCY_TARGET_PAIR_INDEX,
-} from './../../constants';
+} from './../../../constants';
 
 type Props = {
   active: boolean,

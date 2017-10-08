@@ -18,7 +18,11 @@ export default (appID: string): Function => (endpoint: string): CRUD => {
     timeout: 2000,
   });
 
+  const params = {
+    app_id: appID,
+  };
+
   return {
-    read: () => connection.get(`/${endpoint}.json`, { app_id: appID }),
+    read: () => connection.get(`/${endpoint}.json`, { params }),
   };
 };

@@ -8,23 +8,16 @@
 
 
 import * as React from 'react';
-import R from 'ramda';
 import exchangeApi, { type CRUD } from './services/exchangeApi';
+import SelectCurrencyPair from './components/SelectCurrencyPair';
+import { type Currencies } from './types';
 import { isUndef } from './utils/misc';
-
-import SelectListItem from './components/SelectListItem';
 
 import {
   ExchangeWidgetStyled,
   ExchangeWidgetPanelStyled,
   ExchangeWidgetPairStyled,
   ExchangeWidgetPairBoxStyled,
-  ExchangeWidgetPairSelectBoxStyled,
-  ExchangeWidgetPairSelectStyled,
-  ExchangeWidgetPairSelectListStyled,
-  ExchangeWidgetPairSelectListBoxStyled,
-  ExchangeWidgetPairSelectButtonBoxStyled,
-  ExchangeWidgetPairSelectButtonStyled,
 } from './styled';
 
 import {
@@ -34,16 +27,10 @@ import {
 
 type Props = {
   defaultPair: [string, string],
-  defaultValue: [number, number],
   pair: ?[string, string],
-  value: ?[number, number],
   serviceApiConfig: {
     appID: string,
   },
-};
-
-type Currencies = {
-  [string]: string,
 };
 
 type State = {
@@ -51,15 +38,12 @@ type State = {
   exchangeRate: number,
   choicePairVisible: boolean,
   pair: [string, string],
-  value: [number, number],
 };
 
 class ExchangeWidget extends React.Component<Props, State> {
   static defaultProps = {
     defaultPair: ['USD', 'USD'],
-    defaultValue: [1, 1],
     pair: void 0,
-    value: void 0,
     serviceApiConfig: {
       appID: '',
     },
@@ -70,6 +54,7 @@ class ExchangeWidget extends React.Component<Props, State> {
 
     this._connection = exchangeApi(props.serviceApiConfig.appID);
     this._currenciesConnection = this._connection('currencies');
+    this._latestExchangeConnection = this._connection('latest');
   }
 
   state = {
@@ -77,9 +62,6 @@ class ExchangeWidget extends React.Component<Props, State> {
     pair: isUndef(this.props.pair)
       ? this.props.defaultPair
       : this.props.pair,
-    value: isUndef(this.props.value)
-      ? this.props.defaultValue
-      : this.props.value,
     exchangeRate: 1,
     choicePairVisible: false,
   };
@@ -102,18 +84,18 @@ class ExchangeWidget extends React.Component<Props, State> {
     });
   }
 
-  _handleClickCurrencyPair = ({ index, value }) => {
-    const mapIndexed = R.addIndex(R.map);
-
-    this.setState({
-      pair: mapIndexed(
-        (item, idx) => index === idx ? value : item,
-        this.state.pair,
-      ),
-    });
+  _handleChangeCurrencyPair = ({ value }) => {
+    this._latestExchangeConnection.read()
+      .then(data => {
+        this.setState({
+          pair: value,
+          exchangeRate: data.data.rates[value[CURRENCY_TARGET_PAIR_INDEX]],
+          choicePairVisible: false,
+        });
+      });
   }
 
-  _handleChangeCurrencyPair = () => {
+  _handleCancelChoiceCurrencyPair = () => {
     this.setState({
       choicePairVisible: false,
     });
@@ -125,50 +107,13 @@ class ExchangeWidget extends React.Component<Props, State> {
     if (!currencies.length || !choicePairVisible)
       return null;
 
-    const mapToElement = (currencyNum: number) =>
-      (currency: string): React.Element<any> => (
-        <SelectListItem
-          key={`${currencyNum}${currency}`}
-          index={currencyNum}
-          label={currency}
-          value={currency}
-          active={pair[currencyNum] === currency}
-          onClick={this._handleClickCurrencyPair}
-        />
-      );
-
-    const currenciesListSource = R.map(
-      mapToElement(CURRENCY_SOURCE_PAIR_INDEX),
-      currencies,
-    );
-
-    const currenciesListTarget = R.map(
-      mapToElement(CURRENCY_TARGET_PAIR_INDEX),
-      currencies,
-    );
-
     return (
-      <ExchangeWidgetPairSelectBoxStyled>
-        <ExchangeWidgetPairSelectListBoxStyled>
-          <ExchangeWidgetPairSelectStyled>
-            <ExchangeWidgetPairSelectListStyled>
-              { currenciesListSource }
-            </ExchangeWidgetPairSelectListStyled>
-          </ExchangeWidgetPairSelectStyled>
-          <ExchangeWidgetPairSelectStyled>
-            <ExchangeWidgetPairSelectListStyled>
-              { currenciesListTarget }
-            </ExchangeWidgetPairSelectListStyled>
-          </ExchangeWidgetPairSelectStyled>
-        </ExchangeWidgetPairSelectListBoxStyled>
-        <ExchangeWidgetPairSelectButtonBoxStyled>
-          <ExchangeWidgetPairSelectButtonStyled
-            onClick={this._handleChangeCurrencyPair}
-          >
-            APPLY
-          </ExchangeWidgetPairSelectButtonStyled>
-        </ExchangeWidgetPairSelectButtonBoxStyled>
-      </ExchangeWidgetPairSelectBoxStyled>
+      <SelectCurrencyPair
+        currencies={currencies}
+        defaultPair={pair}
+        onChange={this._handleChangeCurrencyPair}
+        onCancel={this._handleCancelChoiceCurrencyPair}
+      />
     );
   }
 
@@ -178,7 +123,9 @@ class ExchangeWidget extends React.Component<Props, State> {
     if (!pair)
       return null;
 
-    const pairExchange = `1 ${pair[0]} = ${exchangeRate} ${pair[1]}`;
+    const pairExchange =
+      `1 ${pair[CURRENCY_SOURCE_PAIR_INDEX]} =
+        ${exchangeRate} ${pair[CURRENCY_TARGET_PAIR_INDEX]}`;
 
     return (
       <ExchangeWidgetPairBoxStyled>

@@ -13,7 +13,7 @@ const ExchangeWidgetPairSelectButtonStyled = styled.button`
   cursor: pointer;
   margin: 0;
   position: relative;
-  width: 100%;
+  width: 50%;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
