@@ -32,6 +32,17 @@ class SelectListItem extends PureComponent<Props> {
     onClick: () => {},
   }
 
+  componentDidMount() {
+    if (this.props.active)
+      this._domNode.scrollIntoView();
+  }
+
+  _domNode: ?HTMLDivElement = null;
+
+  _saveRef = (ref: ?HTMLDivElement) => {
+    this._domNode = ref;
+  }
+
   _handleClick = () => {
     const { index, value, onClick } = this.props;
 
@@ -46,6 +57,7 @@ class SelectListItem extends PureComponent<Props> {
 
     return (
       <ExchangeWidgetPairSelectListItemStyled
+        innerRef={this._saveRef}
         active={active}
         onClick={this._handleClick}
       >
