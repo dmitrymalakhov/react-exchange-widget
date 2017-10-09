@@ -12,17 +12,23 @@ export type CRUD = {
   read: () => Promise<() => any, () => any>,
 };
 
-export default (appID: string): Function => (endpoint: string): CRUD => {
-  const connection = axios.create({
-    baseURL: 'https://openexchangerates.org/api',
-    timeout: 2000,
-  });
+export default (appID: string): Function =>
+  (endpoint: string): CRUD => {
+    const connection = axios.create({
+      baseURL: 'https://openexchangerates.org/api',
+      timeout: 2000,
+    });
 
-  const params = {
-    app_id: appID,
-  };
+    const internalParams = {
+      app_id: appID,
+    };
 
-  return {
-    read: () => connection.get(`/${endpoint}.json`, { params }),
+    return {
+      read: (externalParams: string) => connection.get(`/${endpoint}.json`, {
+        params: {
+          ...internalParams,
+          ...externalParams,
+        },
+      }),
+    };
   };
-};

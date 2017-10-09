@@ -85,14 +85,15 @@ class ExchangeWidget extends React.Component<Props, State> {
   }
 
   _handleChangeCurrencyPair = ({ value }) => {
-    this._latestExchangeConnection.read()
-      .then(data => {
-        this.setState({
-          pair: value,
-          exchangeRate: data.data.rates[value[CURRENCY_TARGET_PAIR_INDEX]],
-          choicePairVisible: false,
-        });
+    this._latestExchangeConnection.read({
+      base: value[CURRENCY_SOURCE_PAIR_INDEX],
+    }).then(data => {
+      this.setState({
+        pair: value,
+        exchangeRate: data.data.rates[value[CURRENCY_TARGET_PAIR_INDEX]],
+        choicePairVisible: false,
       });
+    });
   }
 
   _handleCancelChoiceCurrencyPair = () => {
