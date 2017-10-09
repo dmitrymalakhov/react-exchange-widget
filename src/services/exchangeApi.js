@@ -9,7 +9,7 @@
 import axios from 'axios';
 
 export type CRUD = {
-  read: () => Promise<() => any, () => any>,
+  read: ?Object => Promise<() => any, () => any>,
 };
 
 export default (appID: string): Function =>
@@ -24,7 +24,7 @@ export default (appID: string): Function =>
     };
 
     return {
-      read: (externalParams: string) => connection.get(`/${endpoint}.json`, {
+      read: (externalParams: ?Object) => connection.get(`/${endpoint}.json`, {
         params: {
           ...internalParams,
           ...externalParams,

@@ -9,7 +9,11 @@
 import * as React from 'react';
 import R from 'ramda';
 import SelectListItem from './SelectListItem';
-import { type Currencies } from './../../types';
+
+import {
+  type Currencies,
+  type CurrencyPair,
+} from './../../types';
 
 import {
   ExchangeWidgetPairSelectBoxStyled,
@@ -26,14 +30,19 @@ import {
 } from './../../constants';
 
 type Props = {
-  defaultPair: [string, string],
+  defaultPair: CurrencyPair,
   currencies: Currencies,
-  onChange: () => [string, string],
-  onCancel: () => empty,
+  onChange: ({ value: CurrencyPair }) => CurrencyPair,
+  onCancel: () => void,
 };
 
 type State = {
   pair: [string, string],
+}
+
+type IndexedCurrency = {
+  index: number,
+  value: string,
 }
 
 class SelectCurrencyPair extends React.Component<Props, State> {
@@ -52,8 +61,9 @@ class SelectCurrencyPair extends React.Component<Props, State> {
     };
   }
 
-  _handleClickCurrencyPair = ({ index, value }) => {
-    const mapIndexed = R.addIndex(R.map);
+  _handleClickCurrencyPair = (indexedCurrency: IndexedCurrency) => {
+    const mapIndexed = R.addIndex(R.map),
+      { index, value } = indexedCurrency;
 
     this.setState({
       pair: mapIndexed(

@@ -10,7 +10,10 @@
 import * as React from 'react';
 import exchangeApi, { type CRUD } from './services/exchangeApi';
 import SelectCurrencyPair from './components/SelectCurrencyPair';
-import { type Currencies } from './types';
+import {
+  type Currencies,
+  type CurrencyPair,
+} from './types';
 import { isUndef } from './utils/misc';
 
 import {
@@ -26,8 +29,8 @@ import {
 } from './constants';
 
 type Props = {
-  defaultPair: [string, string],
-  pair: ?[string, string],
+  defaultPair: CurrencyPair,
+  pair: ?CurrencyPair,
   serviceApiConfig: {
     appID: string,
   },
@@ -37,7 +40,7 @@ type State = {
   currencies: Currencies,
   exchangeRate: number,
   choicePairVisible: boolean,
-  pair: [string, string],
+  pair: CurrencyPair,
 };
 
 class ExchangeWidget extends React.Component<Props, State> {
@@ -77,6 +80,7 @@ class ExchangeWidget extends React.Component<Props, State> {
 
   _connection: string => Function;
   _currenciesConnection: string => CRUD;
+  _latestExchangeConnection: string => CRUD;
 
   _handleShowCurrencyPairModal = () => {
     this.setState({
@@ -84,7 +88,7 @@ class ExchangeWidget extends React.Component<Props, State> {
     });
   }
 
-  _handleChangeCurrencyPair = ({ value }) => {
+  _handleChangeCurrencyPair = ({ value }: CurrencyPair) => {
     this._latestExchangeConnection.read({
       base: value[CURRENCY_SOURCE_PAIR_INDEX],
     }).then(data => {

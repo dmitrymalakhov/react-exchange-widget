@@ -20,15 +20,16 @@ type Props = {
   label: string,
   value: string,
   index: CURRENCY_SOURCE_PAIR_INDEX | CURRENCY_TARGET_PAIR_INDEX,
-  onClick: () => number,
+  onClick: ({ index: number, value: string }) => void,
 };
 
 class SelectListItem extends PureComponent<Props> {
   static defaultProps = {
     active: false,
     label: 'USD',
+    value: 'USD',
     index: CURRENCY_SOURCE_PAIR_INDEX,
-    onClick: () => CURRENCY_SOURCE_PAIR_INDEX,
+    onClick: () => {},
   }
 
   _handleClick = () => {
