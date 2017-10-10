@@ -7,7 +7,7 @@
 'use strict';
 
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { ExchangeWidgetPairSelectListItemStyled } from './styled';
 
 import {
@@ -19,35 +19,35 @@ type Props = {
   active: boolean,
   label: string,
   value: string,
-  index: CURRENCY_SOURCE_PAIR_INDEX | CURRENCY_TARGET_PAIR_INDEX,
-  onClick: ({ index: number, value: string }) => void,
+  indexInPair: CURRENCY_SOURCE_PAIR_INDEX | CURRENCY_TARGET_PAIR_INDEX,
+  onClick: ({ indexInPair: number, value: string }) => void,
 };
 
-class SelectListItem extends PureComponent<Props> {
+class SelectListItem extends Component<Props> {
   static defaultProps = {
     active: false,
     label: 'USD',
     value: 'USD',
-    index: CURRENCY_SOURCE_PAIR_INDEX,
+    indexInPair: CURRENCY_SOURCE_PAIR_INDEX,
     onClick: () => {},
   }
 
-  componentDidMount() {
-    if (this.props.active)
-      this._domNode.scrollIntoView();
-  }
+  // componentDidMount() {
+  //   if (this.props.active)
+  //    this._domNode.scrollIntoView();
+  // }
 
-  _domNode: ?HTMLDivElement = null;
+  // _domNode: ?HTMLDivElement = null;
 
   _saveRef = (ref: ?HTMLDivElement) => {
-    this._domNode = ref;
+    // this._domNode = ref;
   }
 
   _handleClick = () => {
-    const { index, value, onClick } = this.props;
+    const { indexInPair, value, onClick } = this.props;
 
     onClick({
-      index,
+      indexInPair,
       value,
     });
   }

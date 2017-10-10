@@ -58,6 +58,9 @@ class ExchangeWidget extends React.Component<Props, State> {
     this._connection = exchangeApi(props.serviceApiConfig.appID);
     this._currenciesConnection = this._connection('currencies');
     this._latestExchangeConnection = this._connection('latest');
+
+    this._currenciesIndex = new Map();
+    this._availableCurrencies = [];
   }
 
   state = {
@@ -72,12 +75,19 @@ class ExchangeWidget extends React.Component<Props, State> {
   componentDidMount() {
     this._currenciesConnection.read()
       .then((currencies: { data: Currencies}): void => {
-        this.setState({
-          currencies: Object.keys(currencies.data),
+        const currenciesShortLabels: Array<string>
+          = Object.keys(currencies.data);
+
+        this._availableCurrencies = currenciesShortLabels;
+
+        currenciesShortLabels.forEach((item: string, idx: number) => {
+          this._currenciesIndex.set(item, idx);
         });
       });
   }
 
+  _availableCurrencies: Array<string>;
+  _currenciesIndex: Map<string, number>;
   _connection: string => Function;
   _currenciesConnection: string => CRUD;
   _latestExchangeConnection: string => CRUD;
@@ -107,14 +117,15 @@ class ExchangeWidget extends React.Component<Props, State> {
   }
 
   _renderCurrenciesPairSelect() {
-    const { currencies, choicePairVisible, pair } = this.state;
+    const { choicePairVisible, pair } = this.state;
 
-    if (!currencies.length || !choicePairVisible)
+    if (!this._availableCurrencies.length || !choicePairVisible)
       return null;
 
     return (
       <SelectCurrencyPair
-        currencies={currencies}
+        currencies={this._availableCurrencies}
+        currenciesIndex={this._currenciesIndex}
         defaultPair={pair}
         onChange={this._handleChangeCurrencyPair}
         onCancel={this._handleCancelChoiceCurrencyPair}

@@ -53,6 +53,7 @@
     "ramda": "^0.24.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-virtualized": "^9.10.1",
     "styled-components": "^2.2.1"
   }
 }
