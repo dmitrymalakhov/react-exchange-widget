@@ -11,7 +11,7 @@ import styled from 'styled-components';
 const ExchangeWidgetTriangleDividedRightStyled = styled.div`
   width: 50%;
   height: 50px;
-  background: linear-gradient(45deg, hsla(220,45.7%,36.8%,0.5) 77%,hsla(220,45.7%,36.8%,0.5) 84%,hsla(220,45.7%,36.8%,0.5) 89%,rgba(0,0,0,0) 90%,rgba(0,0,0,0) 100%);
+  background: linear-gradient(135deg, rgba(125,185,232,0) 0%,rgba(30,87,153,0) 10%,hsla(220,45.7%,36.8%,0.5) 11%,hsla(220,45.7%,36.8%,0.5) 16%,hsla(220,45.7%,36.8%,0.5) 23%);;
 `;
 
 ExchangeWidgetTriangleDividedRightStyled.displayName
