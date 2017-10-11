@@ -10,17 +10,23 @@
 import * as React from 'react';
 import exchangeApi, { type CRUD } from './services/exchangeApi';
 import SelectCurrencyPair from './components/SelectCurrencyPair';
+import TriangleDivided from './components/TriangleDivided';
+
 import {
   type Currencies,
   type CurrencyPair,
 } from './types';
+
 import { isUndef } from './utils/misc';
 
 import {
+  ExchangeWidgetBoxStyled,
   ExchangeWidgetStyled,
-  ExchangeWidgetPanelStyled,
   ExchangeWidgetPairStyled,
   ExchangeWidgetPairBoxStyled,
+  ExchangeWidgetCurrencyConverterStyled,
+  ExchangeWidgetCurrencyConverterSourceInputBoxStyled,
+  ExchangeWidgetCurrencyConverterTargetInputBoxStyled,
 } from './styled';
 
 import {
@@ -152,19 +158,35 @@ class ExchangeWidget extends React.Component<Props, State> {
     );
   }
 
+  _renderExchangeCurrency() {
+    return (
+      <ExchangeWidgetCurrencyConverterStyled>
+        <ExchangeWidgetCurrencyConverterSourceInputBoxStyled>
+          input0
+        </ExchangeWidgetCurrencyConverterSourceInputBoxStyled>
+        <ExchangeWidgetCurrencyConverterTargetInputBoxStyled>
+          <TriangleDivided />
+          input1
+        </ExchangeWidgetCurrencyConverterTargetInputBoxStyled>
+      </ExchangeWidgetCurrencyConverterStyled>
+    );
+  }
+
   render() {
     const { choicePairVisible } = this.state;
 
     const currenciesPair = this._renderPair(),
-      currenciesPairSelect = this._renderCurrenciesPairSelect();
+      currenciesPairSelect = this._renderCurrenciesPairSelect(),
+      exchangeCurrency = this._renderExchangeCurrency();
 
     return (
-      <ExchangeWidgetStyled>
-        <ExchangeWidgetPanelStyled blur={choicePairVisible}>
+      <ExchangeWidgetBoxStyled>
+        <ExchangeWidgetStyled blur={choicePairVisible}>
           {currenciesPair}
-        </ExchangeWidgetPanelStyled>
+          {exchangeCurrency}
+        </ExchangeWidgetStyled>
         {currenciesPairSelect}
-      </ExchangeWidgetStyled>
+      </ExchangeWidgetBoxStyled>
     );
   }
 }

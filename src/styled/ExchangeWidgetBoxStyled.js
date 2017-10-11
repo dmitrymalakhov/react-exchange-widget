@@ -8,14 +8,11 @@
 
 import styled from 'styled-components';
 
-const blur = ({ blur }) => blur
-  ? 'filter: blur(5px);'
-  : null;
-
 const ExchangeWidgetStyled = styled.div`
     position: relative;
-    height: 100%;
-    ${blur}
+    width: 400px;
+    height: 400px;
+    background-image: radial-gradient(#2a78f7, #054ab6);
 `;
 
 ExchangeWidgetStyled.displayName = 'ExchangeWidgetStyled';
