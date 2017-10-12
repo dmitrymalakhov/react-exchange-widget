@@ -67,7 +67,18 @@ class SelectCurrencyPair extends React.Component<Props, State> {
 
     this.state = {
       pair: props.defaultPair,
+      listHeight: 0,
     };
+
+    this._listContainerDomNode = null;
+  }
+
+  componentDidMount() {
+    if (this._listContainerDomNode) {
+      this.setState({
+        listHeight: this._listContainerDomNode.getBoundingClientRect().height,
+      });
+    }
   }
 
   _handleClickCurrencyPair = (indexedCurrency: IndexedCurrency) => {
@@ -90,6 +101,10 @@ class SelectCurrencyPair extends React.Component<Props, State> {
 
   _handleCancel = () => {
     this.props.onCancel();
+  }
+
+  _saveRefListContainer = ref => {
+    this._listContainerDomNode = ref;
   }
 
   _renderRow({ key, style, index, parent }: VirtualizedOptions, indexInPair: number): React.Element<any> {
@@ -118,10 +133,9 @@ class SelectCurrencyPair extends React.Component<Props, State> {
 
   render() {
     const { currencies, currenciesIndex } = this.props,
-      { pair } = this.state;
+      { pair, listHeight } = this.state;
 
-    const listHeight = 320,
-      rowHeight = 34,
+    const rowHeight = 34,
       frameCount = (listHeight / rowHeight, 10) | 0;
 
     const scrollToSourceIndex = (frameCount / 2)
@@ -156,7 +170,7 @@ class SelectCurrencyPair extends React.Component<Props, State> {
 
     return (
       <ExchangeWidgetPairSelectBoxStyled>
-        <ExchangeWidgetPairSelectListBoxStyled>
+        <ExchangeWidgetPairSelectListBoxStyled innerRef={this._saveRefListContainer}>
           <ExchangeWidgetPairSelectStyled>
             <ExchangeWidgetPairSelectListStyled>
               { currenciesListSource }
