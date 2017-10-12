@@ -25,8 +25,8 @@ import {
   ExchangeWidgetPairStyled,
   ExchangeWidgetPairBoxStyled,
   ExchangeWidgetCurrencyConverterStyled,
-  ExchangeWidgetCurrencyConverterSourceInputBoxStyled,
-  ExchangeWidgetCurrencyConverterTargetInputBoxStyled,
+  ExchangeWidgetCurrencyConverterInputBoxStyled,
+  ExchangeWidgetCurrencyConverterInputStyled,
 } from './styled';
 
 import {
@@ -161,13 +161,17 @@ class ExchangeWidget extends React.Component<Props, State> {
   _renderExchangeCurrency() {
     return (
       <ExchangeWidgetCurrencyConverterStyled>
-        <ExchangeWidgetCurrencyConverterSourceInputBoxStyled>
-          input0
-        </ExchangeWidgetCurrencyConverterSourceInputBoxStyled>
-        <ExchangeWidgetCurrencyConverterTargetInputBoxStyled>
+        <ExchangeWidgetCurrencyConverterInputBoxStyled>
+          <ExchangeWidgetCurrencyConverterInputStyled>
+            input0
+          </ExchangeWidgetCurrencyConverterInputStyled>
+        </ExchangeWidgetCurrencyConverterInputBoxStyled>
+        <ExchangeWidgetCurrencyConverterInputBoxStyled>
           <TriangleDivided />
-          input1
-        </ExchangeWidgetCurrencyConverterTargetInputBoxStyled>
+          <ExchangeWidgetCurrencyConverterInputStyled>
+            input1
+          </ExchangeWidgetCurrencyConverterInputStyled>
+        </ExchangeWidgetCurrencyConverterInputBoxStyled>
       </ExchangeWidgetCurrencyConverterStyled>
     );
   }

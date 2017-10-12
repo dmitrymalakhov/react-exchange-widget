@@ -13,10 +13,8 @@ export { default as ExchangeWidgetStyled }
 export { default as ExchangeWidgetCurrencyConverterStyled }
   from './ExchangeWidgetCurrencyConverterStyled';
 
-export { default as ExchangeWidgetCurrencyConverterSourceInputBoxStyled }
-  from './ExchangeWidgetCurrencyConverterSourceInputBoxStyled';
+export { default as ExchangeWidgetCurrencyConverterInputStyled }
+  from './ExchangeWidgetCurrencyConverterInputStyled';
 
-export { default as ExchangeWidgetCurrencyConverterTargetInputBoxStyled }
-  from './ExchangeWidgetCurrencyConverterTargetInputBoxStyled';
-
-
+export { default as ExchangeWidgetCurrencyConverterInputBoxStyled }
+  from './ExchangeWidgetCurrencyConverterInputBoxStyled';
