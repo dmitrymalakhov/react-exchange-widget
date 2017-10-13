@@ -17,6 +17,7 @@ const ExchangeWidgetCurrencyConverterContentStyled = styled.div`
   justify-content: space-around;
   align-items: center;
   color: white;
+  font-family: sans-serif;
 `;
 
 ExchangeWidgetCurrencyConverterContentStyled.displayName =

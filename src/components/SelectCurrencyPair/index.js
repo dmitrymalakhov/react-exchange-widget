@@ -143,7 +143,7 @@ class SelectCurrencyPair extends React.Component<Props, State> {
     
     const scrollToTargetIndex = (frameCount / 2)
       + currenciesIndex.get(pair[CURRENCY_TARGET_PAIR_INDEX]);
- 
+
     const currenciesListSource = (
       <List
         rowCount={currencies.length}

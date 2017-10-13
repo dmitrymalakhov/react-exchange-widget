@@ -11,7 +11,7 @@ import styled from 'styled-components';
 const ExchangeWidgetPairSelectBoxStyled = styled.div`
   display: flex;
   width: 100%;
-  height: 80%;
+  height: calc(100% - 50px);
 `;
 
 ExchangeWidgetPairSelectBoxStyled.displayName =

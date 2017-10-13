@@ -24,3 +24,6 @@ export { default as ExchangeWidgetCurrencyConverterLabel }
 
 export { default as ExchangeWidgetCurrencyConverterInputStyled }
   from './ExchangeWidgetCurrencyConverterInputStyled';
+
+export { default as ExchangeWidgetCurrencyConverterTargetStyled }
+  from './ExchangeWidgetCurrencyConverterTargetStyled';

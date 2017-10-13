@@ -15,9 +15,14 @@ import TriangleDivided from './components/TriangleDivided';
 import {
   type Currencies,
   type CurrencyPair,
+  CurrencyValue,
 } from './types';
 
-import { isUndef } from './utils/misc';
+import {
+  isUndef,
+  parseFloatFix2,
+  isNumeric,
+} from './utils/misc';
 
 import {
   ExchangeWidgetBoxStyled,
@@ -29,6 +34,7 @@ import {
   ExchangeWidgetCurrencyConverterContentStyled,
   ExchangeWidgetCurrencyConverterLabel,
   ExchangeWidgetCurrencyConverterInputStyled,
+  ExchangeWidgetCurrencyConverterTargetStyled,
 } from './styled';
 
 import {
@@ -38,10 +44,14 @@ import {
 
 type Props = {
   defaultPair: CurrencyPair,
+  defaultValue: CurrencyValue,
   pair: ?CurrencyPair,
+  value: ?CurrencyValue,
   serviceApiConfig: {
     appID: string,
   },
+  syncAuto: boolean,
+  syncTimeout: number,
 };
 
 type State = {
@@ -49,15 +59,20 @@ type State = {
   exchangeRate: number,
   choicePairVisible: boolean,
   pair: CurrencyPair,
+  value: CurrencyValue,
 };
 
 class ExchangeWidget extends React.Component<Props, State> {
   static defaultProps = {
     defaultPair: ['USD', 'USD'],
+    defaultValue: [0, 0],
     pair: void 0,
+    value: void 0,
     serviceApiConfig: {
       appID: '',
     },
+    syncAuto: false,
+    syncTimeout: 5000,
   }
 
   constructor(props: Props) {
@@ -69,6 +84,9 @@ class ExchangeWidget extends React.Component<Props, State> {
 
     this._currenciesIndex = new Map();
     this._availableCurrencies = [];
+
+    this._domNodeInput = null;
+    this._syncAutoTimerId = null;
   }
 
   state = {
@@ -76,6 +94,9 @@ class ExchangeWidget extends React.Component<Props, State> {
     pair: isUndef(this.props.pair)
       ? this.props.defaultPair
       : this.props.pair,
+    value: isUndef(this.props.value)
+      ? this.props.defaultValue
+      : this.props.value,
     exchangeRate: 1,
     choicePairVisible: false,
   };
@@ -92,6 +113,29 @@ class ExchangeWidget extends React.Component<Props, State> {
           this._currenciesIndex.set(item, idx);
         });
       });
+
+    if (this.props.syncAuto) {
+      this._syncAutoTimerId = setTimeout(
+        this._syncExchangeRate,
+        this.props.syncTimeout,
+      );
+    }
+
+    this._domNodeInput.focus();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.autoSync !== this.props.autoSync) {
+      if (nextProps.autoSync)
+        this._startSyncTimer();
+      else
+        this._stopSyncTimer();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.syncAuto)
+      this._stopSyncTimer();
   }
 
   _availableCurrencies: Array<string>;
@@ -99,6 +143,61 @@ class ExchangeWidget extends React.Component<Props, State> {
   _connection: string => Function;
   _currenciesConnection: string => CRUD;
   _latestExchangeConnection: string => CRUD;
+
+  _saveRefInput = ref => {
+    this._domNodeInput = ref;
+  }
+
+  _startSyncTimer() {
+    this._syncAutoTimerId = setTimeout(
+      this._syncExchangeRate,
+      this.props.syncTimeout,
+    );
+  }
+
+  _stopSyncTimer() {
+    clearTimeout(this._syncAutoTimerId);
+    this._syncAutoTimerId = null;
+  }
+
+  _syncExchangeRate() {
+    this._latestExchangeConnection.read({
+      base: value[CURRENCY_SOURCE_PAIR_INDEX],
+    }).then(data => {
+      const exchangeRate = data.data.rates[value[CURRENCY_TARGET_PAIR_INDEX]],
+        sourceValue = this.state.value[CURRENCY_SOURCE_PAIR_INDEX];
+
+      if (exchangeRate !== this.state.exchangeRate) {
+        this.setState({
+          value: [
+            sourceValue,
+            parseFloatFix2(sourceValue * exchangeRate),
+          ],
+          exchangeRate,
+        });
+      }
+    });
+
+    if (this.props.syncAuto) {
+      this._startSyncTimer();
+    }
+  }
+
+  _handleChangeSourceValue = ({ target }) => {
+    const { exchangeRate } = this.state,
+      { value } = target;
+
+    if (isNumeric(value) || value === '') {
+      if (isUndef(this.props.value)) {
+        this.setState({
+          value: [
+            target.value,
+            parseFloatFix2(value * exchangeRate),
+          ],
+        });
+      }
+    }
+  }
 
   _handleShowCurrencyPairModal = () => {
     this.setState({
@@ -110,11 +209,20 @@ class ExchangeWidget extends React.Component<Props, State> {
     this._latestExchangeConnection.read({
       base: value[CURRENCY_SOURCE_PAIR_INDEX],
     }).then(data => {
+      const exchangeRate = data.data.rates[value[CURRENCY_TARGET_PAIR_INDEX]],
+        sourceValue = this.state.value[CURRENCY_SOURCE_PAIR_INDEX];
+
       this.setState({
         pair: value,
-        exchangeRate: data.data.rates[value[CURRENCY_TARGET_PAIR_INDEX]],
+        value: [
+          sourceValue,
+          parseFloatFix2(sourceValue * exchangeRate),
+        ],
+        exchangeRate,
         choicePairVisible: false,
       });
+
+      this._domNodeInput.focus();
     });
   }
 
@@ -122,6 +230,8 @@ class ExchangeWidget extends React.Component<Props, State> {
     this.setState({
       choicePairVisible: false,
     });
+
+    this._domNodeInput.focus();
   }
 
   _renderCurrenciesPairSelect() {
@@ -161,7 +271,7 @@ class ExchangeWidget extends React.Component<Props, State> {
   }
 
   _renderExchangeCurrency() {
-    const { pair } = this.state;
+    const { pair, value } = this.state;
 
     return (
       <ExchangeWidgetCurrencyConverterStyled>
@@ -170,7 +280,11 @@ class ExchangeWidget extends React.Component<Props, State> {
             <ExchangeWidgetCurrencyConverterLabel>
               {pair[CURRENCY_SOURCE_PAIR_INDEX]}
             </ExchangeWidgetCurrencyConverterLabel>
-            <ExchangeWidgetCurrencyConverterInputStyled />
+            <ExchangeWidgetCurrencyConverterInputStyled
+              innerRef={this._saveRefInput}
+              onChange={this._handleChangeSourceValue}
+              value={value[CURRENCY_SOURCE_PAIR_INDEX]}
+            />
           </ExchangeWidgetCurrencyConverterContentStyled>
         </ExchangeWidgetCurrencyConverterInputBoxStyled>
         <ExchangeWidgetCurrencyConverterInputBoxStyled>
@@ -179,6 +293,11 @@ class ExchangeWidget extends React.Component<Props, State> {
             <ExchangeWidgetCurrencyConverterLabel>
               {pair[CURRENCY_TARGET_PAIR_INDEX]}
             </ExchangeWidgetCurrencyConverterLabel>
+            <ExchangeWidgetCurrencyConverterTargetStyled
+              value={value[CURRENCY_TARGET_PAIR_INDEX]}
+            >
+                {value[CURRENCY_TARGET_PAIR_INDEX]}
+            </ExchangeWidgetCurrencyConverterTargetStyled>
           </ExchangeWidgetCurrencyConverterContentStyled>
         </ExchangeWidgetCurrencyConverterInputBoxStyled>
       </ExchangeWidgetCurrencyConverterStyled>

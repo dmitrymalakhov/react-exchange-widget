@@ -10,7 +10,6 @@ import styled from 'styled-components';
 
 const ExchangeWidgetCurrencyConverterLabel = styled.div`
   font-size: 50px;
-  font-family: sans-serif;
 `;
 
 ExchangeWidgetCurrencyConverterLabel.displayName =

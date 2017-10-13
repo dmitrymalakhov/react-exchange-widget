@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 const ExchangeWidgetPairSelectButtonBoxStyled = styled.div`
   display: flex;
-  height: 20%;
+  height: 50px;
   width: 100%;
 `;
 
