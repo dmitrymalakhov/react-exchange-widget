@@ -13,8 +13,14 @@ export { default as ExchangeWidgetStyled }
 export { default as ExchangeWidgetCurrencyConverterStyled }
   from './ExchangeWidgetCurrencyConverterStyled';
 
-export { default as ExchangeWidgetCurrencyConverterInputStyled }
-  from './ExchangeWidgetCurrencyConverterInputStyled';
+export { default as ExchangeWidgetCurrencyConverterContentStyled }
+  from './ExchangeWidgetCurrencyConverterContentStyled';
 
 export { default as ExchangeWidgetCurrencyConverterInputBoxStyled }
   from './ExchangeWidgetCurrencyConverterInputBoxStyled';
+
+export { default as ExchangeWidgetCurrencyConverterLabel }
+  from './ExchangeWidgetCurrencyConverterLabel';
+
+export { default as ExchangeWidgetCurrencyConverterInputStyled }
+  from './ExchangeWidgetCurrencyConverterInputStyled';

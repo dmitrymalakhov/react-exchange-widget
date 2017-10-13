@@ -26,6 +26,8 @@ import {
   ExchangeWidgetPairBoxStyled,
   ExchangeWidgetCurrencyConverterStyled,
   ExchangeWidgetCurrencyConverterInputBoxStyled,
+  ExchangeWidgetCurrencyConverterContentStyled,
+  ExchangeWidgetCurrencyConverterLabel,
   ExchangeWidgetCurrencyConverterInputStyled,
 } from './styled';
 
@@ -159,18 +161,25 @@ class ExchangeWidget extends React.Component<Props, State> {
   }
 
   _renderExchangeCurrency() {
+    const { pair } = this.state;
+
     return (
       <ExchangeWidgetCurrencyConverterStyled>
         <ExchangeWidgetCurrencyConverterInputBoxStyled>
-          <ExchangeWidgetCurrencyConverterInputStyled>
-            input0
-          </ExchangeWidgetCurrencyConverterInputStyled>
+          <ExchangeWidgetCurrencyConverterContentStyled>
+            <ExchangeWidgetCurrencyConverterLabel>
+              {pair[CURRENCY_SOURCE_PAIR_INDEX]}
+            </ExchangeWidgetCurrencyConverterLabel>
+            <ExchangeWidgetCurrencyConverterInputStyled />
+          </ExchangeWidgetCurrencyConverterContentStyled>
         </ExchangeWidgetCurrencyConverterInputBoxStyled>
         <ExchangeWidgetCurrencyConverterInputBoxStyled>
           <TriangleDivided />
-          <ExchangeWidgetCurrencyConverterInputStyled>
-            input1
-          </ExchangeWidgetCurrencyConverterInputStyled>
+          <ExchangeWidgetCurrencyConverterContentStyled>
+            <ExchangeWidgetCurrencyConverterLabel>
+              {pair[CURRENCY_TARGET_PAIR_INDEX]}
+            </ExchangeWidgetCurrencyConverterLabel>
+          </ExchangeWidgetCurrencyConverterContentStyled>
         </ExchangeWidgetCurrencyConverterInputBoxStyled>
       </ExchangeWidgetCurrencyConverterStyled>
     );

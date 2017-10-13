@@ -8,14 +8,11 @@
 
 import styled from 'styled-components';
 
-const ExchangeWidgetCurrencyConverterInputStyled = styled.div`
-  display: flex;
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
+const ExchangeWidgetCurrencyConverterInputStyled = styled.input`
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  font-size: 50px;
+  max-width: 150px;
 `;
 
 ExchangeWidgetCurrencyConverterInputStyled.displayName =
