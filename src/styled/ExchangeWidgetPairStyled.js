@@ -18,7 +18,7 @@ const border = ({ theme }) => `
 
 const ExchangeWidgetPairStyled = styled.div`
   display: inline-block;
-  background: hsla(220,45.7%,36.8%,0.5);
+  background: hsla(220, 45.7%, 36.8%, 0.5);
   border-radius: 10px;
   padding: 5px;
   user-select: none;

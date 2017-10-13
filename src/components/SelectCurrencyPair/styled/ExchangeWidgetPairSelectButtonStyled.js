@@ -18,17 +18,13 @@ const ExchangeWidgetPairSelectButtonStyled = styled.button`
   margin: 0;
   position: relative;
   width: 50%;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   user-select: none;
   vertical-align: middle;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  text-decoration: none;
-  background-color: hsla(220,45.7%,36.8%,0.5);
+  background-color: hsla(220, 45.7%, 36.8%, 0.5);
   border-width: 0;
   border-color: transparent;
   font-size: 14px;
@@ -38,15 +34,15 @@ const ExchangeWidgetPairSelectButtonStyled = styled.button`
   text-transform: uppercase;
   font-weight: 600;
   padding: 0px 8px;
-  transition-property: color,background-color,border,box-shadow;
+  transition-property: color, background-color, border, box-shadow;
   transition-duration: 300ms;
   transition-timing-function: ease-out;
   transition-delay: 0ms;
   ${color}
 
   &:hover {
-    background-color: hsl(220,45.7%,36.8%);
-    color: #ffffff;
+    background-color: hsl(220, 45.7%, 36.8%);
+    color: #fff;
   }
 `;
 

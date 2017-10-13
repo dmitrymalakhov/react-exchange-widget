@@ -9,22 +9,22 @@
 import styled from 'styled-components';
 
 const background = ({ theme }) => `
-    background: ${theme.background};
+  background: ${theme.background};
 `;
 
 const height = ({ theme }) => `
-    height: ${theme.height};
+  height: ${theme.height};
 `;
 
 const width = ({ theme }) => `
-    width: ${theme.width};
+  width: ${theme.width};
 `;
 
 const ExchangeWidgetStyled = styled.div`
-    position: relative;
-    ${width}
-    ${height}
-    ${background}
+  position: relative;
+  ${width}
+  ${height}
+  ${background}
 `;
 
 ExchangeWidgetStyled.displayName = 'ExchangeWidgetStyled';

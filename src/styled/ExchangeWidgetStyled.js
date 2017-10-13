@@ -13,9 +13,9 @@ const blur = ({ blur }) => blur
   : null;
 
 const ExchangeWidgetStyled = styled.div`
-    position: relative;
-    height: 100%;
-    ${blur}
+  position: relative;
+  height: 100%;
+  ${blur}
 `;
 
 ExchangeWidgetStyled.displayName = 'ExchangeWidgetStyled';

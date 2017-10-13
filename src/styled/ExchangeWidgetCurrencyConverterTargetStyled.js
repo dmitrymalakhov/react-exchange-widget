@@ -31,11 +31,11 @@ const color = ({ theme }) => `
 `;
 
 const ExchangeWidgetCurrencyConverterTargetStyled = styled.div`
-    width: 180px;
-    text-align: right;
-    overflow: auto;
-    ${color}
-    ${fontSize}
+  width: 180px;
+  text-align: right;
+  overflow: auto;
+  ${color}
+  ${fontSize}
 `;
 
 ExchangeWidgetCurrencyConverterTargetStyled.displayName =

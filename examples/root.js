@@ -1,5 +1,3 @@
-// @flow
-
 /**
  * @author Dmitry Malakhov
  */
