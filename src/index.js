@@ -6,7 +6,6 @@
 
 'use strict';
 
-
 import * as React from 'react';
 import exchangeApi, { type CRUD } from './services/exchangeApi';
 import SelectCurrencyPair from './components/SelectCurrencyPair';
@@ -160,11 +159,13 @@ class ExchangeWidget extends React.Component<Props, State> {
     this._syncAutoTimerId = null;
   }
 
-  _syncExchangeRate() {
+  _syncExchangeRate = () => {
+    const { pair } = this.state;
+
     this._latestExchangeConnection.read({
-      base: value[CURRENCY_SOURCE_PAIR_INDEX],
+      base: pair[CURRENCY_SOURCE_PAIR_INDEX],
     }).then(data => {
-      const exchangeRate = data.data.rates[value[CURRENCY_TARGET_PAIR_INDEX]],
+      const exchangeRate = data.data.rates[pair[CURRENCY_TARGET_PAIR_INDEX]],
         sourceValue = this.state.value[CURRENCY_SOURCE_PAIR_INDEX];
 
       if (exchangeRate !== this.state.exchangeRate) {
