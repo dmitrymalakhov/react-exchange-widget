@@ -32,17 +32,6 @@ class SelectListItem extends Component<Props> {
     onClick: () => {},
   }
 
-  // componentDidMount() {
-  //   if (this.props.active)
-  //    this._domNode.scrollIntoView();
-  // }
-
-  // _domNode: ?HTMLDivElement = null;
-
-  _saveRef = (ref: ?HTMLDivElement) => {
-    // this._domNode = ref;
-  }
-
   _handleClick = () => {
     const { indexInPair, value, onClick } = this.props;
 
