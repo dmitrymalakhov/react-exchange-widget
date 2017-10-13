@@ -1,7 +1,7 @@
 {
   "name": "react-exchange-widget",
-  "version": "1.0.0",
-  "description": "Themable and customisable exchange widget",
+  "version": "1.0.1",
+  "description": "Customisable currency exchange React widget",
   "main": "lib/index.js",
   "scripts": {
     "start": "webpack-dev-server --config   ./examples/build-conf/webpack.config.js",
