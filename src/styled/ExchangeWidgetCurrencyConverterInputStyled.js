@@ -13,6 +13,8 @@ const ExchangeWidgetCurrencyConverterInputStyled = styled.input`
   border: none;
   font-size: 50px;
   max-width: 150px;
+  color: white;
+  direction: rtl;
 `;
 
 ExchangeWidgetCurrencyConverterInputStyled.displayName =
