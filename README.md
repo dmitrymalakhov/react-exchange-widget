@@ -2,6 +2,8 @@
 
 Customisable currency exchange React widget for [https://openexchangerates.org/](https://openexchangerates.org/)
 
+Cool [demo](https://dmitrymalakhov.github.io/react-exchange-widget/)
+
 ![react-exchange-widget](docs/demo.gif)
 
 ## Install
