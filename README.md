@@ -1,6 +1,6 @@
 # react-exchange-widget
 
-Themable and customisable exchange React widget for [https://openexchangerates.org/](https://openexchangerates.org/)
+Customisable currency exchange React widget for [https://openexchangerates.org/](https://openexchangerates.org/)
 
 ![react-exchange-widget](docs/demo.gif)
 
@@ -48,18 +48,18 @@ Initial currency pair
 
 Initial value
 
-### serviceApiConfig: { appID: string }
+#### serviceApiConfig: { appID: string }
 
 Your AppID in https://openexchangerates.org/
 
-### syncAuto: boolean
+#### syncAuto: boolean
 
-Enable auto sync currency rate
+Enable auto sync of currency rate
 
-### syncTimeout: number
+#### syncTimeout: number
 
 Synchronization interval in milliseconds
 
-### theme: { background: string, width: string, height: string, textColor: string }
+#### theme: { background: string, width: string, height: string, textColor: string }
 
 Object to configure a custom theme.
