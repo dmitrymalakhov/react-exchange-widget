@@ -4,10 +4,14 @@
   "description": "Customisable currency exchange React widget",
   "main": "lib/index.js",
   "scripts": {
-    "start": "webpack-dev-server --config   ./examples/build-conf/webpack.config.js",
+    "start": "webpack-dev-server --config ./examples/build-conf/webpack.config.js",
     "lint": "run-s lint:js lint:style",
     "lint:js": "eslint .",
     "lint:style": "stylelint './src/**/styled/*.js'",
+    "clean:public": "rm -rf ./examples/public/**",
+    "build": "webpack --config ./examples/build-conf/webpack.config.js",
+    "build:prod": "NODE_ENV=production run-s clean:public build",
+    "build:dev": "NODE_ENV=development run-s clean:public build",
     "prepublishOnly": "rimraf ./lib && babel ./src --out-dir ./lib"
   },
   "files": [
