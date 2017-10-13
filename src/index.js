@@ -7,14 +7,17 @@
 'use strict';
 
 import * as React from 'react';
+import { ThemeProvider } from 'styled-components';
 import exchangeApi, { type CRUD } from './services/exchangeApi';
 import SelectCurrencyPair from './components/SelectCurrencyPair';
 import TriangleDivided from './components/TriangleDivided';
+import defaultTheme from './theme/defaultTheme';
 
 import {
   type Currencies,
   type CurrencyPair,
-  CurrencyValue,
+  type CurrencyValue,
+  type Theme,
 } from './types';
 
 import {
@@ -51,6 +54,7 @@ type Props = {
   },
   syncAuto: boolean,
   syncTimeout: number,
+  theme: Theme,
 };
 
 type State = {
@@ -72,6 +76,7 @@ class ExchangeWidget extends React.Component<Props, State> {
     },
     syncAuto: false,
     syncTimeout: 5000,
+    theme: defaultTheme,
   }
 
   constructor(props: Props) {
@@ -147,6 +152,15 @@ class ExchangeWidget extends React.Component<Props, State> {
     this._domNodeInput = ref;
   }
 
+  _getTheme() {
+    const { theme } = this.props;
+
+    return {
+      ...defaultTheme,
+      ...theme,
+    };
+  }
+
   _startSyncTimer() {
     this._syncAutoTimerId = setTimeout(
       this._syncExchangeRate,
@@ -179,9 +193,8 @@ class ExchangeWidget extends React.Component<Props, State> {
       }
     });
 
-    if (this.props.syncAuto) {
+    if (this.props.syncAuto)
       this._startSyncTimer();
-    }
   }
 
   _handleChangeSourceValue = ({ target }) => {
@@ -297,7 +310,7 @@ class ExchangeWidget extends React.Component<Props, State> {
             <ExchangeWidgetCurrencyConverterTargetStyled
               value={value[CURRENCY_TARGET_PAIR_INDEX]}
             >
-                {value[CURRENCY_TARGET_PAIR_INDEX]}
+              {value[CURRENCY_TARGET_PAIR_INDEX]}
             </ExchangeWidgetCurrencyConverterTargetStyled>
           </ExchangeWidgetCurrencyConverterContentStyled>
         </ExchangeWidgetCurrencyConverterInputBoxStyled>
@@ -308,18 +321,22 @@ class ExchangeWidget extends React.Component<Props, State> {
   render() {
     const { choicePairVisible } = this.state;
 
+    const theme = this._getTheme();
+
     const currenciesPair = this._renderPair(),
       currenciesPairSelect = this._renderCurrenciesPairSelect(),
       exchangeCurrency = this._renderExchangeCurrency();
 
     return (
-      <ExchangeWidgetBoxStyled>
-        <ExchangeWidgetStyled blur={choicePairVisible}>
-          {currenciesPair}
-          {exchangeCurrency}
-        </ExchangeWidgetStyled>
-        {currenciesPairSelect}
-      </ExchangeWidgetBoxStyled>
+      <ThemeProvider theme={theme}>
+        <ExchangeWidgetBoxStyled>
+          <ExchangeWidgetStyled blur={choicePairVisible}>
+            {currenciesPair}
+            {exchangeCurrency}
+          </ExchangeWidgetStyled>
+          {currenciesPairSelect}
+        </ExchangeWidgetBoxStyled>
+      </ThemeProvider>
     );
   }
 }

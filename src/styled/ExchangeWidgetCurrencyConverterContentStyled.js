@@ -8,6 +8,10 @@
 
 import styled from 'styled-components';
 
+const color = ({ theme }) => `
+  color: ${theme.textColor};
+`;
+
 const ExchangeWidgetCurrencyConverterContentStyled = styled.div`
   display: flex;
   position: absolute;
@@ -16,8 +20,8 @@ const ExchangeWidgetCurrencyConverterContentStyled = styled.div`
   width: 100%;
   justify-content: space-around;
   align-items: center;
-  color: white;
   font-family: sans-serif;
+  ${color}
 `;
 
 ExchangeWidgetCurrencyConverterContentStyled.displayName =

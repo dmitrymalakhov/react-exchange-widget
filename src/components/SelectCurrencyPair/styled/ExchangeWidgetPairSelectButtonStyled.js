@@ -8,6 +8,10 @@
 
 import styled from 'styled-components';
 
+const color = ({ theme }) => `
+  color: ${theme.textColor};
+`;
+
 const ExchangeWidgetPairSelectButtonStyled = styled.button`
   height: 100%;
   cursor: pointer;
@@ -24,8 +28,7 @@ const ExchangeWidgetPairSelectButtonStyled = styled.button`
   justify-content: center;
   box-sizing: border-box;
   text-decoration: none;
-  background-color: #3c5da1;
-  color: #ffffff;
+  background-color: hsla(220,45.7%,36.8%,0.5);
   border-width: 0;
   border-color: transparent;
   font-size: 14px;
@@ -39,6 +42,7 @@ const ExchangeWidgetPairSelectButtonStyled = styled.button`
   transition-duration: 300ms;
   transition-timing-function: ease-out;
   transition-delay: 0ms;
+  ${color}
 
   &:hover {
     background-color: hsl(220,45.7%,36.8%);

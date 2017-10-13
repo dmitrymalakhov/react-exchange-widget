@@ -5,3 +5,7 @@ export type Currencies = {
 export type CurrencyValue = [number, number];
 
 export type CurrencyPair = [string, string];
+
+export type Theme = {
+  background: string,
+};

@@ -17,21 +17,24 @@ const fontSize = ({ value }) => {
     if (valueLength > 7)
       currentFornSize = 30;
     
-     if (valueLength > 10)
+    if (valueLength > 10)
       currentFornSize = 20;
   }
   
   return `
     font-size: ${currentFornSize}px;
   `;
-}
+};
 
+const color = ({ theme }) => `
+  color: ${theme.textColor};
+`;
 
 const ExchangeWidgetCurrencyConverterTargetStyled = styled.div`
     width: 180px;
-    color: white;
     text-align: right;
     overflow: auto;
+    ${color}
     ${fontSize}
 `;
 

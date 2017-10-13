@@ -5,7 +5,7 @@
 'use strict';
 
 const { resolve } = require('path'),
-  webpack = require('webpack')
+  webpack = require('webpack');
 
 const Package = require('../../package.json');
 
