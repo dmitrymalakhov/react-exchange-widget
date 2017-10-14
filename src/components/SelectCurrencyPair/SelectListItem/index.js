@@ -46,7 +46,6 @@ class SelectListItem extends Component<Props> {
 
     return (
       <ExchangeWidgetPairSelectListItemStyled
-        innerRef={this._saveRef}
         active={active}
         onClick={this._handleClick}
       >

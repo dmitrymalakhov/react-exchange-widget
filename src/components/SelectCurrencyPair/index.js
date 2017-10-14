@@ -40,6 +40,8 @@ type Props = {
 
 type State = {
   pair: [string, string],
+  listHeight: number,
+  listWidth: number,
 }
 
 type IndexedCurrency = {
@@ -68,19 +70,24 @@ class SelectCurrencyPair extends React.Component<Props, State> {
     this.state = {
       pair: props.defaultPair,
       listHeight: 0,
+      listWidth: 0,
     };
 
     this._listContainerDomNode = null;
   }
 
   componentDidMount() {
-    if (this._listContainerDomNode) {
-      this.setState({
-        listHeight: this._listContainerDomNode.getBoundingClientRect().height,
-        listWidth: this._listContainerDomNode.getBoundingClientRect().width,
-      });
-    }
+    const listContainerSize = this._listContainerDomNode
+      ? this._listContainerDomNode.getBoundingClientRect()
+      : { height: 0, width: 0 };
+
+    this.setState({
+      listHeight: listContainerSize.height,
+      listWidth: listContainerSize.width,
+    });
   }
+
+  _listContainerDomNode: ?HTMLDivElement;
 
   _handleClickCurrencyPair = (indexedCurrency: IndexedCurrency) => {
     const mapIndexed = R.addIndex(R.map),
@@ -104,7 +111,7 @@ class SelectCurrencyPair extends React.Component<Props, State> {
     this.props.onCancel();
   }
 
-  _saveRefListContainer = ref => {
+  _saveRefListContainer = (ref: HTMLDivElement) => {
     this._listContainerDomNode = ref;
   }
 
