@@ -287,17 +287,22 @@ class ExchangeWidget extends React.Component<Props, State> {
   _renderExchangeCurrency() {
     const { pair, value } = this.state;
 
+    const sourceCurrency = pair ? pair[CURRENCY_SOURCE_PAIR_INDEX] : 'USD',
+      sourceValue = value ? value[CURRENCY_SOURCE_PAIR_INDEX] : 0,
+      targetCurrency = pair ? pair[CURRENCY_TARGET_PAIR_INDEX] : 'USD',
+      targetValue = value ? value[CURRENCY_TARGET_PAIR_INDEX] : 0;
+
     return (
       <ExchangeWidgetCurrencyConverterStyled>
         <ExchangeWidgetCurrencyConverterInputBoxStyled>
           <ExchangeWidgetCurrencyConverterContentStyled>
             <ExchangeWidgetCurrencyConverterLabel>
-              {pair[CURRENCY_SOURCE_PAIR_INDEX]}
+              {sourceCurrency}
             </ExchangeWidgetCurrencyConverterLabel>
             <ExchangeWidgetCurrencyConverterInputStyled
               innerRef={this._saveRefInput}
               onChange={this._handleChangeSourceValue}
-              value={value[CURRENCY_SOURCE_PAIR_INDEX]}
+              value={sourceValue}
             />
           </ExchangeWidgetCurrencyConverterContentStyled>
         </ExchangeWidgetCurrencyConverterInputBoxStyled>
@@ -305,12 +310,12 @@ class ExchangeWidget extends React.Component<Props, State> {
           <TriangleDivided />
           <ExchangeWidgetCurrencyConverterContentStyled>
             <ExchangeWidgetCurrencyConverterLabel>
-              {pair[CURRENCY_TARGET_PAIR_INDEX]}
+              {targetCurrency}
             </ExchangeWidgetCurrencyConverterLabel>
             <ExchangeWidgetCurrencyConverterTargetStyled
-              value={value[CURRENCY_TARGET_PAIR_INDEX]}
+              value={targetValue}
             >
-              {value[CURRENCY_TARGET_PAIR_INDEX]}
+              {targetValue}
             </ExchangeWidgetCurrencyConverterTargetStyled>
           </ExchangeWidgetCurrencyConverterContentStyled>
         </ExchangeWidgetCurrencyConverterInputBoxStyled>
