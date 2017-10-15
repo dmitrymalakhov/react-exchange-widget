@@ -44,7 +44,7 @@ render() {
 
 #### defaultPair: [string, string]
 
-Initial currency pair
+Initial pair
 
 #### defaultValue: [number, number]
 
@@ -65,3 +65,5 @@ Synchronization interval in milliseconds
 #### theme: { background: string, width: string, height: string, textColor: string }
 
 Object to configure a custom theme.
+
+#### onChange: func({ pair: [string, string], value: [number, number] }) => void

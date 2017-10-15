@@ -24,6 +24,7 @@ import {
   isUndef,
   parseFloatFix2,
   isNumeric,
+  noop,
 } from './utils/misc';
 
 import {
@@ -56,6 +57,7 @@ type Props = {
   syncAuto: boolean,
   syncTimeout: number,
   theme: Theme,
+  onChange: ({ value: CurrencyValue, pair: CurrencyPair }) => void,
 };
 
 type State = {
@@ -78,6 +80,7 @@ class ExchangeWidget extends React.Component<Props, State> {
     syncAuto: false,
     syncTimeout: 5000,
     theme: defaultTheme,
+    onChange: noop,
   }
 
   constructor(props: Props) {
@@ -169,6 +172,19 @@ class ExchangeWidget extends React.Component<Props, State> {
     };
   }
 
+  _getPair() {
+    return isUndef(this.props.pair)
+      ? this.state.pair
+      : this.props.pair;
+  }
+
+  _getValue() {
+    return isUndef(this.props.value)
+      ? this.state.value
+      : this.props.value;
+  }
+
+
   _startSyncTimer() {
     this._syncAutoTimerId = setTimeout(
       this._syncExchangeRate,
@@ -202,12 +218,19 @@ class ExchangeWidget extends React.Component<Props, State> {
         : 0;
 
       if (exchangeRate !== this.state.exchangeRate) {
+        const newValue = [
+          sourceValue,
+          parseFloatFix2(sourceValue * exchangeRate),
+        ];
+
         this.setState({
-          value: [
-            sourceValue,
-            parseFloatFix2(sourceValue * exchangeRate),
-          ],
+          value: newValue,
           exchangeRate,
+        });
+
+        this.props.onChange({
+          value: newValue,
+          pair,
         });
       }
     });
@@ -217,7 +240,7 @@ class ExchangeWidget extends React.Component<Props, State> {
   }
 
   _handleChangeSourceValue = ({ target }: SyntheticInputEvent<any>) => {
-    const { exchangeRate } = this.state,
+    const { exchangeRate, pair } = this.state,
       { value } = target;
 
     if (isNumeric(value) || value === '') {
@@ -228,8 +251,15 @@ class ExchangeWidget extends React.Component<Props, State> {
           ? parseFloatFix2(parseFloat(value) * exchangeRate)
           : 0;
 
+        const newValue = [sourceValue, targetValue];
+
         this.setState({
-          value: [sourceValue, targetValue],
+          value: newValue,
+        });
+
+        this.props.onChange({
+          value: newValue,
+          pair,
         });
       }
     }
@@ -251,14 +281,23 @@ class ExchangeWidget extends React.Component<Props, State> {
         ? this.state.value[CURRENCY_SOURCE_PAIR_INDEX]
         : 0;
 
+      const newPair = value;
+
+      const newValue = [
+        sourceValue,
+        parseFloatFix2(sourceValue * exchangeRate),
+      ];
+
       this.setState({
-        pair: value,
-        value: [
-          sourceValue,
-          parseFloatFix2(sourceValue * exchangeRate),
-        ],
+        pair: newPair,
+        value: newValue,
         exchangeRate,
         choicePairVisible: false,
+      });
+
+      this.props.onChange({
+        pair: newPair,
+        value: newValue,
       });
 
       this.focusInput();
@@ -310,7 +349,8 @@ class ExchangeWidget extends React.Component<Props, State> {
   }
 
   _renderExchangeCurrency() {
-    const { pair, value } = this.state;
+    const pair = this._getPair(),
+      value = this._getValue();
 
     const sourceCurrency = pair ? pair[CURRENCY_SOURCE_PAIR_INDEX] : DEFAULT_CURRENCY,
       sourceValue = value ? value[CURRENCY_SOURCE_PAIR_INDEX] : 0,
