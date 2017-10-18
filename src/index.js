@@ -143,6 +143,9 @@ class ExchangeWidget extends React.Component<Props, State> {
   componentWillUnmount() {
     this._unmounted = true;
 
+    this._currenciesConnection.cancel();
+    this._latestExchangeConnection.cancel();
+
     if (this.props.syncAuto)
       this._stopSyncTimer();
   }
