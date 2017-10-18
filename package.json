@@ -1,6 +1,6 @@
 {
   "name": "react-exchange-widget",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Customisable currency exchange React widget",
   "main": "lib/index.js",
   "scripts": {
