@@ -95,6 +95,7 @@ class ExchangeWidget extends React.Component<Props, State> {
 
     this._domNodeInput = null;
     this._syncAutoTimerId = null;
+    this._unmounted = true;
   }
 
   state = {
@@ -110,6 +111,8 @@ class ExchangeWidget extends React.Component<Props, State> {
   };
 
   componentDidMount() {
+    this._unmounted = false;
+
     this._currenciesConnection.read()
       .then((currencies: { data: Currencies}): void => {
         const currenciesShortLabels: Array<string>
@@ -122,12 +125,8 @@ class ExchangeWidget extends React.Component<Props, State> {
         });
       });
 
-    if (this.props.syncAuto) {
-      this._syncAutoTimerId = setTimeout(
-        this._syncExchangeRate,
-        this.props.syncTimeout,
-      );
-    }
+    if (this.props.syncAuto)
+      this._startSyncTimer();
 
     this.focusInput();
   }
@@ -142,6 +141,8 @@ class ExchangeWidget extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
+    this._unmounted = true;
+
     if (this.props.syncAuto)
       this._stopSyncTimer();
   }
@@ -153,13 +154,14 @@ class ExchangeWidget extends React.Component<Props, State> {
   _latestExchangeConnection: string => CRUD;
   _domNodeInput: ?HTMLInputElement;
   _syncAutoTimerId: ?number;
+  _unmounted: boolean;
 
   focusInput() {
     if (this._domNodeInput)
       this._domNodeInput.focus();
   }
 
-  _saveRefInput = (ref: HTMLInputElement) => {
+  _saveRefInput = (ref: ?HTMLInputElement) => {
     this._domNodeInput = ref;
   }
 
@@ -184,8 +186,10 @@ class ExchangeWidget extends React.Component<Props, State> {
       : this.props.value;
   }
 
-
   _startSyncTimer() {
+    if (this._unmounted)
+      return;
+
     this._syncAutoTimerId = setTimeout(
       this._syncExchangeRate,
       this.props.syncTimeout,
@@ -223,15 +227,17 @@ class ExchangeWidget extends React.Component<Props, State> {
           parseFloatFix2(sourceValue * exchangeRate),
         ];
 
-        this.setState({
-          value: newValue,
-          exchangeRate,
-        });
+        if (!this._unmounted) {
+          this.setState({
+            value: newValue,
+            exchangeRate,
+          });
 
-        this.props.onChange({
-          value: newValue,
-          pair,
-        });
+          this.props.onChange({
+            value: newValue,
+            pair,
+          });
+        }
       }
     });
 
@@ -288,19 +294,21 @@ class ExchangeWidget extends React.Component<Props, State> {
         parseFloatFix2(sourceValue * exchangeRate),
       ];
 
-      this.setState({
-        pair: newPair,
-        value: newValue,
-        exchangeRate,
-        choicePairVisible: false,
-      });
+      if (!this._unmounted) {
+        this.setState({
+          pair: newPair,
+          value: newValue,
+          exchangeRate,
+          choicePairVisible: false,
+        });
 
-      this.props.onChange({
-        pair: newPair,
-        value: newValue,
-      });
+        this.props.onChange({
+          pair: newPair,
+          value: newValue,
+        });
 
-      this.focusInput();
+        this.focusInput();
+      }
     });
   }
 
